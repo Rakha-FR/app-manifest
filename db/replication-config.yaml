@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: replication-script
+data:
+  replication.sh: |
+    #!/bin/sh
+    # -----------------------------------------------------------------------------------------------------------------------------------
+
+    echo "Configurating streaming replication..."
+
+    # -----------------------------------------------------------------------------------------------------------------------------------
+
+    PRIMARY_SS=$(kubectl get statefulset -l services=primary-db -o custom-columns=":metadata.name" | tr -d '\n' | head -n 1)
+    REPLICA_SS=$(kubectl get statefulset -l services=replica-db -o custom-columns=":metadata.name" | tr -d '\n' | head -n 1)
+    echo "$PRIMARY_SS"
+    echo "$REPLICA_SS"
+    kubectl exec ${PRIMARY_POD} -c primary-db -- sh /etc/postgresql/slave/init.sh
+    echo "Restart postgres service"
+    kubectl rollout restart statefulset ${PRIMARY_SS}
+
+    while true; do
+      PRIMARY_POD=$(kubectl get pod -l services=primary-db -o custom-columns=":metadata.name")
+      PRIMARY_STATUS=$(kubectl get pod $PRIMARY_POD -o jsonpath="{.status.phase}")
+      if [ "$PRIMARY_STATUS" = "Running" ]; then
+        echo "Primary pods are running:"
+        echo "$PRIMARY_POD: $PRIMARY_STATUS"
+        break
+      else
+        echo "Waiting for primary pod to be in 'Running' status..."
+        echo "$PRIMARY_POD: $PRIMARY_STATUS"
+        sleep 10
+      fi
+    done
+
+    echo "Restart postgres service"
+    kubectl rollout restart statefulset ${REPLICA_SS}
+
+    while true; do
+      REPLICA_POD=$(kubectl get pod -l services=replica-db -o custom-columns=":metadata.name")
+      REPLICA_STATUS=$(kubectl get pod $REPLICA_POD -o jsonpath="{.status.phase}")
+      if [ "$REPLICA_STATUS" = "Running" ]; then
+        echo "Replica pods are running:"
+        echo "$REPLICA_POD: $REPLICA_STATUS"
+        break
+      else
+        echo "Waiting for replica pod to be in 'Running' status..."
+        echo "$REPLICA_POD: $REPLICA_STATUS"
+        sleep 10
+      fi
+    done

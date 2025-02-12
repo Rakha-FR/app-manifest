@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: replication-script-job
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: replication-script
+          image: alpine:latest
+          command: ["/bin/sh", "-c", "/scripts/replication.sh"]
+          volumeMounts:
+            - name: script-volume
+              mountPath: /scripts
+      volumes:
+        - name: script-volume
+          configMap:
+            name: replication-script

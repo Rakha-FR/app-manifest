@@ -5,3 +5,5 @@ resources:
   - environment.yaml
   - deployment.yaml
   - config.yaml
+  - replication.yaml
+  - replication-config.yaml
