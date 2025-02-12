@@ -45,18 +45,27 @@ data:
     #!/bin/bash
     set -e
 
-    mkdir /var/lib/postgresql/archivedir
 
     until pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"; do
-      echo "Waiting for PostgreSQL to be ready..."
-      sleep 10
+        echo "Waiting for PostgreSQL to be ready..."
+        sleep 1
     done
 
+    echo "Create replicator user"
     psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
       DO \$\$ 
       BEGIN
         IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'replicator') THEN
           CREATE USER replicator WITH REPLICATION;
+        END IF;
+      END
+      \$\$;
+      DO \$\$ 
+      BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'hcuser') THEN
+          CREATE USER hcuser WITH LOGIN;
+          GRANT USAGE ON SCHEMA pg_catalog TO hcuser;
+          GRANT SELECT ON pg_stat_activity, pg_database TO hcuser;
         END IF;
       END
       \$\$;
@@ -69,8 +78,20 @@ data:
       \$\$;
     EOSQL
 
+    REPLICA_PATH="/var/lib/postgresql/data-slave"
+
+    if [ -d "$REPLICA_PATH" ]; then
+      echo "Cleaning up REPLICA data: $REPLICA_PATH"
+      find $REPLICA_PATH -mindepth 1 -delete
+      echo "REPLICA deleted successfully."
+    else
+      echo "REPLICA $REPLICA_PATH not found."
+    fi
+
+    echo "Backup master"
     pg_basebackup -D /var/lib/postgresql/data-slave -S replication_slot_slave1 -X stream -P -U replicator -Fp -R
 
-    cp /etc/postgresql/slave/slave-config/* /var/lib/postgresql/data-slave
-    cp /etc/postgresql/pg_hba.conf /var/lib/postgresql/data
-    cp /etc/postgresql/pg_hba.conf /var/lib/postgresql/data-slave
+    echo "Copy slave data"
+    cp /etc/postgresql/replication/slave-config/* /var/lib/postgresql/data-slave
+    cp /etc/postgresql/replication/config/pg_hba.conf /var/lib/postgresql/data
+    cp /etc/postgresql/replication/config/pg_hba.conf /var/lib/postgresql/data-slave

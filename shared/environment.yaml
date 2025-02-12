@@ -14,7 +14,3 @@ data:
   POSTGRES_DB: "laravel"
   POSTGRES_USER: "sysadmin"
   POSTGRES_PASSWORD: "neuron_123"
-  MEMCACHED_HOST: "redis-service"
-  REDIS_HOST: "redis-service"
-  REDIS_PASSWORD: "neuron_123"
-  REDIS_PORT: "6379"
