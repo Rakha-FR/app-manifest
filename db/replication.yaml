@@ -18,6 +18,7 @@ spec:
             - |
               PRIMARY_SS=$(kubectl get statefulset -l services=primary-db -o custom-columns=":metadata.name" | tr -d '\n' | head -n 1)
               REPLICA_SS=$(kubectl get statefulset -l services=replica-db -o custom-columns=":metadata.name" | tr -d '\n' | head -n 1)
+              PRIMARY_POD=$(kubectl get pod -l services=primary-db -o custom-columns=":metadata.name")
               echo "$PRIMARY_SS"
               echo "$REPLICA_SS"
               kubectl exec ${PRIMARY_POD} -c primary-db -- sh /etc/postgresql/slave/init.sh
