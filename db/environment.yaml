@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: env-db
 data:
+  POSTGRES_HOST: "primary-db-service"
   POSTGRES_DB: "laravel"
   POSTGRES_USER: "sysadmin"
   POSTGRES_PASSWORD: "neuron_123"
