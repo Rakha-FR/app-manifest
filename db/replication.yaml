@@ -12,7 +12,12 @@ spec:
       containers:
         - name: replication-script
           image: alpine:latest
-          command: ["/bin/sh", "-c", "/scripts/replication.sh"]
+          command:
+            [
+              "/bin/sh",
+              "-c",
+              "chmod +x /scripts/replication.sh && /scripts/replication.sh",
+            ]
           volumeMounts:
             - name: script-volume
               mountPath: /scripts
