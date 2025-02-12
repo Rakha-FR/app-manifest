@@ -3,15 +3,16 @@ kind: Job
 metadata:
   name: replication-script-job
   annotations:
-    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook: PostSync, SyncFail
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   template:
     spec:
+      serviceAccountName: kubectl-access
       restartPolicy: Never
       containers:
         - name: replication-script
-          image: alpine:latest
+          image: bitnami/kubectl:latest
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -53,3 +54,5 @@ spec:
                   sleep 10
                 fi
               done
+          securityContext:
+            runAsUser: 0
