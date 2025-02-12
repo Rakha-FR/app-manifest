@@ -96,7 +96,7 @@ spec:
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: laravel-configmap
+                name: env-db
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -158,7 +158,7 @@ spec:
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: laravel-configmap
+                name: env-db
           ports:
             - containerPort: 5432
           volumeMounts:

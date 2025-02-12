@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: laravel-configmap
+  name: env-app
 data:
   APP_ENV: "local"
   DB_CONNECTION: "pgsql"
@@ -10,7 +10,3 @@ data:
   DB_DATABASE: "laravel"
   DB_USERNAME: "sysadmin"
   DB_PASSWORD: "neuron_123"
-  POSTGRES_HOST: "primary-db-service"
-  POSTGRES_DB: "laravel"
-  POSTGRES_USER: "sysadmin"
-  POSTGRES_PASSWORD: "neuron_123"
