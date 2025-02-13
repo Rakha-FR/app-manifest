@@ -8,6 +8,8 @@ metadata:
 spec:
   template:
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: "new-worker2"
       serviceAccountName: kubectl-access
       restartPolicy: Never
       containers:
