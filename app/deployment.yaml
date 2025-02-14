@@ -90,7 +90,3 @@ spec:
                 name: app-service
                 port:
                   number: 80
-status:
-  loadBalancer:
-    ingress:
-      - ip: 192.168.1.53
