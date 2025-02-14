@@ -6,7 +6,13 @@ metadata:
     argocd.argoproj.io/hook: PostSync, SyncFail
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
+  selector:
+    matchLabels:
+      job-name: replication-script-job
   template:
+    metadata:
+      labels:
+        job-name: replication-script-job
     spec:
       nodeSelector:
         kubernetes.io/hostname: "new-worker2"
