@@ -89,4 +89,4 @@ spec:
             - configMapRef:
                 name: app-env
       imagePullSecrets:
-        - name: gitlab-registry-secret
+        - name: gitlab-registry
