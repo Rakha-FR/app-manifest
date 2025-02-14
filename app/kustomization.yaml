@@ -8,5 +8,5 @@ resources:
 
 images:
   - name: dynamic-image
-    imageName: ${IMAGE_REPOSITORY}
-    imageTag: ${IMAGE_TAG}
+    newName: ${IMAGE_REPOSITORY}
+    newTag: ${IMAGE_TAG}
