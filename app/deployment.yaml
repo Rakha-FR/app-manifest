@@ -75,7 +75,7 @@ spec:
             - containerPort: 9090
           envFrom:
             - configMapRef:
-                name: app-env
+                name: env-app
         - name: nginx
           image: nginx:latest
           imagePullPolicy: IfNotPresent
@@ -87,6 +87,6 @@ spec:
               subPath: default.conf
           envFrom:
             - configMapRef:
-                name: app-env
+                name: env-app
       imagePullSecrets:
         - name: gitlab-registry
