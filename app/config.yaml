@@ -17,10 +17,9 @@ data:
       }
 
       location ~ \.php$ {
-          fastcgi_pass laravel-service:9090;
+          fastcgi_pass laravel-service.default.svc.cluster.local:9090;
           fastcgi_index index.php;
           fastcgi_param SCRIPT_FILENAME /var/www/public$fastcgi_script_name;
           include fastcgi_params;
       }
     }
-
