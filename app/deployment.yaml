@@ -69,7 +69,7 @@ spec:
             name: nginx-config
       containers:
         - name: app
-          image: ${CI_REGISTRY_IMAGE}/app:${VERSION}
+          image: dynamic-image
           imagePullPolicy: Always
           ports:
             - containerPort: 9090
