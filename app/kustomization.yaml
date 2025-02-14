@@ -8,5 +8,5 @@ resources:
 
 images:
   - name: dynamic-image
-    newName: r${CI_REGISTRY_IMAGE}/app
+    newName: ${CI_REGISTRY_IMAGE}/app
     newTag: ${VERSION}
