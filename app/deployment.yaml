@@ -77,7 +77,7 @@ spec:
             - configMapRef:
                 name: app-env
         - name: nginx
-          image: nignx:latest
+          image: nginx:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
