@@ -8,5 +8,5 @@ resources:
 
 images:
   - name: dynamic-image
-    newName: ${IMAGE_REPOSITORY}
-    newTag: ${IMAGE_TAG}
+    newName: registry.neuron.id/training/magang-rakha/app
+    newTag: v1.4
