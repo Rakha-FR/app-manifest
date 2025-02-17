@@ -81,7 +81,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: laravel-app.comt
+    - host: k8s.laravel-app.id
       http:
         paths:
           - path: /
