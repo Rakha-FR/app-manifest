@@ -15,14 +15,8 @@ spec:
       labels:
         services: app
     spec:
-      nodeAffinity:
-        required:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                    - new-worker1
+      nodeSelector:
+        kubernetes.io/hostname: "new-worker1"
       volumes:
         - name: nginx-config
           configMap:
