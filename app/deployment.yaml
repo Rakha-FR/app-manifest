@@ -15,8 +15,14 @@ spec:
       labels:
         services: app
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: "new-worker1"
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - new-worker1
       volumes:
         - name: nginx-config
           configMap:
@@ -43,7 +49,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: env-app
-      imagePullSecrets:
+        imagePullSecrets:
         - name: gitlab-registry
 
 ---
@@ -81,7 +87,8 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - http:
+    - host: laravel-app.comt
+      http:
         paths:
           - path: /
             pathType: Prefix
