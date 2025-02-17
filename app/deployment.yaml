@@ -24,7 +24,7 @@ spec:
       containers:
         - name: app
           image: dynamic-image
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9090
           envFrom:
