@@ -8,11 +8,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      job: env-script-job
+      job: env-job
   template:
     metadata:
       labels:
-        job: env-script-job
+        job: env-job
     spec:
       nodeSelector:
         kubernetes.io/hostname: "new-worker1"
