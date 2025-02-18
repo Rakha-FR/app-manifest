@@ -21,6 +21,9 @@ spec:
         - name: nginx-config
           configMap:
             name: nginx-config
+        - name: app-config
+          configMap:
+            name: app-config
       containers:
         - name: app
           image: dynamic-image
