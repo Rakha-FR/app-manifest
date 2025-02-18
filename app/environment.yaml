@@ -1,12 +1,30 @@
-apiVersion: v1
-kind: ConfigMap
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: env-app
-data:
-  APP_ENV: "local"
-  DB_CONNECTION: "pgsql"
-  DB_HOST: "primary-db-service"
-  DB_PORT: "5432"
-  DB_DATABASE: "laravel"
-  DB_USERNAME: "sysadmin"
-  DB_PASSWORD: "neuron_123"
+  name: env-job
+  annotations:
+    argocd.argoproj.io/hook: PostSync, SyncFail
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  selector:
+    matchLabels:
+      job-name: env-script-job
+  template:
+    metadata:
+      labels:
+        job-name: env-script-job
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "new-worker1"
+      serviceAccountName: kubectl-access
+      restartPolicy: Never
+      containers:
+        - name: env-script
+          image: bitnami/kubectl:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              APP_POD=$(kubectl get pod -l services=app -o custom-columns=":metadata.name" | tr -d '\n')
+              kubectl exec ${APP_POD} -c app -- sh /etc/init.d/init.sh
+          securityContext:
+            runAsUser: 0

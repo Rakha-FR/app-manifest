@@ -23,3 +23,34 @@ data:
           include fastcgi_params;
       }
     }
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  init.sh: |
+    #!/bin/bash
+
+    set -e
+
+    if [ ! -f .env ]; then
+        cp .env.k8s .env
+    fi
+
+    # Menambahkan APP_ENV jika belum ada
+    if ! grep -q "^APP_ENV=" .env || grep -q "^APP_ENV=$" .env; then
+        echo "Menambahkan APP_ENV ke file .env..."
+        echo "APP_ENV=development" >> .env
+    else
+        echo "APP_ENV sudah ada, melanjutkan proses..."
+    fi
+
+    # Periksa apakah APP_KEY ada dan tidak kosong
+    if ! grep -q "^APP_KEY=" .env || grep -q "^APP_KEY=$" .env; then
+        echo "APP_KEY tidak ditemukan atau kosong, membuat APP_KEY baru..."
+        php artisan key:generate
+    else
+        echo "APP_KEY sudah ada, melanjutkan proses..."
+    fi
