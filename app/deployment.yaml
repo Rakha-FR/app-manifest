@@ -26,7 +26,7 @@ spec:
             name: app-config
       containers:
         - name: app
-          image: registry.neuron.id/training/magang-rakha/app
+          image: dynamic-image
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9090

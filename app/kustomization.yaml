@@ -7,5 +7,6 @@ resources:
   - config.yaml
 
 images:
-  - name: registry.neuron.id/training/magang-rakha/app
-    newTag: "{{ .imagePolicy.laravel-app-policy.latestImage }}"
+  - name: dynamic-image
+    newName: registry.neuron.id/training/magang-rakha/app
+    newTag: "1.3"
