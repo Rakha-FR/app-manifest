@@ -5,8 +5,7 @@ resources:
   - environment.yaml
   - deployment.yaml
   - config.yaml
-
-images:
-  - name: dynamic-image
-    newName: registry.neuron.id/training/magang-rakha/app
-    newTag: "1.3"
+# images:
+#   - name: dynamic-image
+#     newName: registry.neuron.id/training/magang-rakha/app
+#     newTag: "1.3"
