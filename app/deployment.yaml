@@ -26,7 +26,7 @@ spec:
             name: app-config
       containers:
         - name: app
-          image: registry.neuron.id/training/magang-rakha/app:v1.5.1 # {"$imagepolicy": "flux-system:laravel-app-policy"}
+          image: registry.neuron.id/training/magang-rakha/app:v1.5.2 # {"$imagepolicy": "flux-system:laravel-app-policy"}
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9090
