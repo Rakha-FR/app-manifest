@@ -7,4 +7,4 @@ resources:
   - config.yaml
 images:
   - name: testing-image
-    newTag: "1.3"
+    newTag: v1.5.3]
