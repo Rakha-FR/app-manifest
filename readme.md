@@ -1,1 +1,1 @@
-appVersion: "v1.5"
+appVersion: "v1.5.1"
