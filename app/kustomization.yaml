@@ -6,5 +6,6 @@ resources:
   - deployment.yaml
   - config.yaml
 images:
-  - name: testing-image
+  - name: dynamic-image
+    newName: registry.neuron.id/training/magang-rakha/app
     newTag: "v1.5"
